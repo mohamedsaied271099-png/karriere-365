@@ -147,3 +147,4 @@ label { font-weight: 600; font-size: 14px; }
 .side-item.on { background: color-mix(in srgb, var(--c, #0284c7) 14%, transparent); color: var(--c, #0284c7); }
 .side-item.on small { color: inherit; }
 @media (prefers-color-scheme: dark) { .side-item.on { background: color-mix(in srgb, var(--c, #0284c7) 25%, transparent); color: #fff; } }
+.brand-logo { width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0; }
