@@ -84,6 +84,64 @@ ${done.length ? done.map((d) => `- ${d}`).join("\n") : "- (لسه)"}
 
 اسألني الأول عن: خبرتي في الشغل (الشركة، المسمى، المهام بالظبط)، تعليمي، ومستوى الألماني والإنجليزي. وبعدين اكتب النسختين.`,
 
+  jobs: (P, profile, beruf, city) => `${PROJECT_INSTRUCTIONS}
+
+---
+${ctx(P)}
+استخدم البحث في الإنترنت (Web search) ودوّرلي على عروض Ausbildung حقيقية ومفتوحة دلوقتي لمهنة "${beruf}"${city ? ` في ${city} أو حواليها` : " في أي مكان في ألمانيا"}، بداية 2027.
+دوّر في كل المصادر: arbeitsagentur.de/jobsuche، IHK-Lehrstellenbörse، ausbildung.de، azubiyo، aubi-plus، Indeed، LinkedIn، StepStone، ومواقع الشركات نفسها (DHL، DB Schenker، DACHSER، Kühne+Nagel، Rhenus، Hellmann...)، وكمان أي مصدر غير رسمي موثوق.
+فضّل العروض اللي بتقبل متقدمين من بره ألمانيا أو مش شارطة إقامة.
+
+ملفي:
+${profile}
+
+شروط مهمة:
+- حط بس عروض فتحت صفحتها بنفسك ولقيتها موجودة. ماتألفش لينكات.
+- اكتب لكل عرض مدى مناسبته ليا من 10 وليه.
+رد بسطر واحد ملخص، وبعدين JSON بس:
+[{"title":"Ausbildung ...","company":"...","city":"...","start":"08/2027","deadline":"","url":"https://...","source":"...","fit":8,"why":"سبب قصير بالعربي","req":"المطلوب: لغة/شهادات"}]`,
+
+  importCV: (raw) => `${PROJECT_INSTRUCTIONS}
+
+---
+ده السي في بتاعي الحالي (ممكن يكون عربي أو إنجليزي):
+
+${raw || "(الصق السي في هنا أو ارفعه كملف)"}
+
+حوّله لبيانات Lebenslauf ألماني. ترجم المسميات والمهام لألماني سليم ومهني (مصطلحات اللوجستيك الألمانية الصح)، والتواريخ بالشكل MM/JJJJ.
+لو ناقصك حاجة اسألني الأول. وبعدين رد بـ JSON object بس:
+{"name":"","birth":"TT.MM.JJJJ","birthplace":"","nationality":"ägyptisch","address":"","phone":"","email":"",
+"exp":[{"from":"MM/JJJJ","to":"MM/JJJJ oder heute","title":"","company":"","city":"","tasks":"Aufgabe 1; Aufgabe 2"}],
+"edu":[{"from":"","to":"","title":"","school":"","city":""}],
+"langs":[{"lang":"Arabisch","level":"Muttersprache"},{"lang":"Deutsch","level":"A1"},{"lang":"Englisch","level":""}],
+"skills":"MS Office, ...","hobbies":""}`,
+
+  cvUpdate: (P, cv, news, beruf) => `${PROJECT_INSTRUCTIONS}
+
+---
+${ctx(P)}
+ده الـ Lebenslauf بتاعي النسخة الحالية:
+
+${cv}
+
+الجديد من آخر تحديث:
+${news.length ? news.map((n) => `- ${n}`).join("\n") : "- (مفيش جديد)"}
+
+حدّث الـ Lebenslauf بالجديد ده واكتبه بشكل احترافي مناسب لـ Ausbildung "${beruf}": رتّب الأقسام صح، وحسّن صياغة المهام بأفعال قوية، وقولي في الآخر 3 حاجات لو عملتها السي في هيبقى أقوى.`,
+
+  anschreiben: (P, job, profile) => `${PROJECT_INSTRUCTIONS}
+
+---
+${ctx(P)}
+اكتبلي Anschreiben بالألماني (صفحة واحدة، مستوى B1 طبيعي ومش مبالغ فيه) للعرض ده:
+${job.title} — ${job.company}, ${job.city}${job.url ? `\n${job.url}` : ""}
+${job.req ? `المطلوب: ${job.req}` : ""}
+
+ملفي:
+${profile}
+
+افتح صفحة العرض واقرا المطلوب لو تقدر، واربط خبرتي في اللوجستيك بمتطلباتهم، واذكر إني جاي من مصر وعندي فيزا تدريب مهني هتتعمل بعد العقد. وبعدها اكتبلي بالعربي إزاي أبعته (إيميل/بوابة الشركة) وإيه الأوراق اللي أرفقها.`,
+
   weekly: (P, summary) => `${PROJECT_INSTRUCTIONS}
 
 ---

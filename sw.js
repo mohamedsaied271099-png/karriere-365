@@ -1,6 +1,6 @@
 // يخلي التطبيق يفتح من غير إنترنت (Claude بس هو اللي محتاج نت)
-const CACHE = "karriere365-v1";
-const FILES = ["./", "./index.html", "./styles.css", "./app.js", "./catalog.js", "./ai.js", "./manifest.json", "./icon.svg"];
+const CACHE = "karriere365-v2";
+const FILES = ["./", "./index.html", "./styles.css", "./app.js", "./catalog.js", "./ai.js", "./files.js", "./manifest.json", "./icon.svg"];
 
 self.addEventListener("install", (e) => e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES))));
 self.addEventListener("activate", (e) => e.waitUntil(

@@ -97,3 +97,48 @@ export const WEEKDAY_PLAN = {
   4: { icon: "🔁", name: "مراجعة واختبار", min: 60, t: "راجع ملاحظاتك المستحقة + Claude يمتحنك في كورس الأسبوع" },
   5: { icon: "🇩🇪", name: "لوجستيك بالألماني", min: 30, t: "15 مصطلح لوجستيك بالألماني يروحوا لبطاقات Deutsch 365 (نص ساعة بس، وارتاح)" },
 };
+
+// مصادر البحث عن Ausbildung. q = اسم المهنة، city = مدينة (اختياري)
+const enc = encodeURIComponent;
+const g = (site, q) => `https://www.google.com/search?q=${enc(`site:${site} ${q}`)}`;
+export const JOB_SOURCES = [
+  { group: "رسمي", name: "Jobbörse (وكالة العمل الألمانية)", note: "أكبر قاعدة رسمية لعروض Ausbildung",
+    url: (q, city) => `https://www.arbeitsagentur.de/jobsuche/suche?angebotsart=4&was=${enc(q)}${city ? `&wo=${enc(city)}` : ""}` },
+  { group: "رسمي", name: "IHK-Lehrstellenbörse", note: "عروض الشركات المسجلة في الغرف التجارية",
+    url: (q, city) => g("ihk-lehrstellenboerse.de", `${q} ${city}`) },
+  { group: "رسمي", name: "Make it in Germany", note: "بوابة الحكومة للأجانب",
+    url: (q) => g("make-it-in-germany.com", `Ausbildung ${q}`) },
+  { group: "مواقع Ausbildung", name: "ausbildung.de", note: "",
+    url: (q, city) => g("ausbildung.de", `${q} ${city} 2027`) },
+  { group: "مواقع Ausbildung", name: "AZUBIYO", note: "",
+    url: (q, city) => g("azubiyo.de", `${q} ${city}`) },
+  { group: "مواقع Ausbildung", name: "aubi-plus", note: "",
+    url: (q, city) => g("aubi-plus.de", `${q} ${city}`) },
+  { group: "مواقع Ausbildung", name: "azubi.de", note: "",
+    url: (q, city) => g("azubi.de", `${q} ${city}`) },
+  { group: "مواقع وظايف عامة", name: "Indeed Deutschland", note: "",
+    url: (q, city) => `https://de.indeed.com/jobs?q=${enc(`Ausbildung ${q}`)}${city ? `&l=${enc(city)}` : ""}` },
+  { group: "مواقع وظايف عامة", name: "LinkedIn Jobs", note: "اعمل Job Alert من هناك",
+    url: (q, city) => `https://www.linkedin.com/jobs/search/?keywords=${enc(`Ausbildung ${q}`)}&location=${enc(city || "Germany")}` },
+  { group: "مواقع وظايف عامة", name: "StepStone", note: "",
+    url: (q, city) => g("stepstone.de", `Ausbildung ${q} ${city}`) },
+  { group: "شركات لوجستيك كبيرة", name: "DHL / DB Schenker / DACHSER / Kühne+Nagel / Rhenus", note: "بيفتحوا Ausbildung كل سنة",
+    url: (q) => `https://www.google.com/search?q=${enc(`Ausbildung ${q} 2027 (DHL OR Schenker OR DACHSER OR "Kühne+Nagel" OR Rhenus OR Hellmann)`)}` },
+  { group: "شركات لوجستيك كبيرة", name: "شركات بتقبل متقدمين من بره", note: "عروض مكتوب فيها إنها بتقبل أجانب",
+    url: (q) => `https://www.google.com/search?q=${enc(`Ausbildung ${q} "internationale Bewerber" OR "aus dem Ausland" 2027`)}` },
+  { group: "غير رسمي (اتأكد دايماً)", name: "جروبات فيسبوك للمصريين", note: "تجارب وفرص — احذر من أي حد يطلب فلوس",
+    url: () => `https://www.facebook.com/search/groups/?q=${enc("Ausbildung في ألمانيا للمصريين")}` },
+  { group: "غير رسمي (اتأكد دايماً)", name: "Reddit r/germany", note: "أسئلة وتجارب حقيقية",
+    url: (q) => `https://www.reddit.com/r/germany/search/?q=${enc(`Ausbildung ${q}`)}` },
+  { group: "غير رسمي (اتأكد دايماً)", name: "يوتيوب: تجارب Ausbildung لوجستيك", note: "",
+    url: (q) => `https://www.youtube.com/results?search_query=${enc(`Ausbildung ${q} Erfahrung`)}` },
+];
+
+export const JOB_STATUS = {
+  new: { t: "🆕 جديدة", c: "#64748b" },
+  plan: { t: "📝 هقدم", c: "#0891b2" },
+  sent: { t: "📤 قدمت", c: "#7c3aed" },
+  interview: { t: "🎤 مقابلة", c: "#f59e0b" },
+  offer: { t: "🎉 عرض", c: "#16a34a" },
+  no: { t: "❌ رفض", c: "#dc2626" },
+};

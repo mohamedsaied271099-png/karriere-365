@@ -89,3 +89,10 @@ label { font-weight: 600; font-size: 14px; }
 .row { display: flex; gap: 10px; flex-wrap: wrap; }
 .row > * { flex: 1; min-width: 140px; }
 .big { font-size: 28px; font-weight: 700; }
+
+/* ---- طباعة السي في ---- */
+@media print {
+  .top, aside, #scrim, .noprint { display: none !important; }
+  body, main { background: #fff !important; padding: 0 !important; max-width: none; }
+  .card.cv { border: 0; padding: 0; }
+}
