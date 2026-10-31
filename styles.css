@@ -96,3 +96,54 @@ label { font-weight: 600; font-size: 14px; }
   body, main { background: #fff !important; padding: 0 !important; max-width: none; }
   .card.cv { border: 0; padding: 0; }
 }
+
+/* ================= التصميم الجديد: أيقونات خطية موحدة ================= */
+.top { background: #0f172a; }
+.top-btn { display: none; place-items: center; background: rgba(255,255,255,.08); color: #e2e8f0; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; width: 38px; height: 38px; padding: 0; cursor: pointer; text-decoration: none; }
+.in-app .top-btn, .top-btn.show { display: inline-grid; }
+.top-btn:hover { background: rgba(255,255,255,.16); }
+.brand { display: flex; align-items: center; gap: 8px; font-size: 17px; }
+.title-ic { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; color: var(--c); background: color-mix(in srgb, var(--c) 18%, transparent); flex-shrink: 0; }
+.stats { display: flex; align-items: center; gap: 12px; }
+.stats span { margin: 0; display: inline-flex; align-items: center; gap: 4px; font-size: 14px; }
+#streakBox .ic { color: #fb923c; } #xpBox .ic { color: #facc15; }
+.side-title { display: flex; align-items: center; gap: 10px; }
+.side-title .title-ic { width: 36px; height: 36px; border-radius: 11px; }
+
+/* الكارت الرئيسي */
+.hero2 { position: relative; overflow: hidden; border-radius: 22px; padding: 18px; margin-bottom: 8px; color: #fff;
+  background: radial-gradient(120% 140% at 100% 0%, #0e7490 0%, #0f172a 60%); box-shadow: 0 10px 30px rgba(15,23,42,.25); }
+.hero-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.chip { background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.18); padding: 4px 12px; border-radius: 99px; font-size: 13px; font-weight: 600; }
+.hero-week { font-size: 13px; opacity: .75; }
+.hero-main { display: flex; justify-content: space-between; align-items: flex-end; margin: 14px 0 12px; gap: 12px; }
+.hero-num { font-size: 44px; font-weight: 800; line-height: 1; }
+.hero-num small { font-size: 18px; opacity: .6; font-weight: 600; }
+.hero-sub { font-size: 13px; opacity: .7; margin-top: 4px; }
+.hero-trip { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,.1); border-radius: 14px; padding: 8px 12px; font-size: 13px; line-height: 1.4; }
+.hero-trip b { font-size: 18px; } .hero-trip small { opacity: .7; } .hero-trip .ic { color: #67e8f9; }
+.hero-bar { height: 6px; background: rgba(255,255,255,.15); border-radius: 99px; overflow: hidden; }
+.hero-bar i { display: block; height: 100%; min-width: 6px; background: linear-gradient(90deg, #22d3ee, #a78bfa); border-radius: 99px; }
+.hero-next { display: flex; align-items: center; gap: 10px; margin-top: 14px; padding: 10px 12px; border-radius: 14px; background: rgba(255,255,255,.08); color: #fff; text-decoration: none; font-size: 14px; }
+.hero-next span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hero-next:hover { background: rgba(255,255,255,.14); }
+
+/* مجموعات التطبيقات */
+.group-title { font-size: 13px; font-weight: 700; color: var(--muted); margin: 22px 4px 10px; letter-spacing: .2px; }
+.apps { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+.app { align-items: flex-start; gap: 4px; padding: 16px; border-radius: 18px; transition: transform .15s, box-shadow .15s, border-color .15s; }
+.app:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--c) 45%, var(--line)); box-shadow: 0 8px 20px color-mix(in srgb, var(--c) 15%, transparent); }
+.app-icon { width: 48px; height: 48px; border-radius: 14px; margin-bottom: 8px; font-size: 0; box-shadow: none;
+  color: var(--c); background: color-mix(in srgb, var(--c) 13%, transparent); }
+.app-name { font-size: 16px; }
+.app-badge { font-size: 12px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 480px) {
+  .apps { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .app { padding: 14px; } .app-icon { width: 44px; height: 44px; font-size: 0; } .app-name { font-size: 15px; }
+  .hero-num { font-size: 38px; }
+}
+@media (prefers-color-scheme: dark) { .app-icon, .title-ic { background: color-mix(in srgb, var(--c) 22%, transparent); } }
+.side-item { margin-bottom: 2px; }
+.side-item.on { background: color-mix(in srgb, var(--c, #0284c7) 14%, transparent); color: var(--c, #0284c7); }
+.side-item.on small { color: inherit; }
+@media (prefers-color-scheme: dark) { .side-item.on { background: color-mix(in srgb, var(--c, #0284c7) 25%, transparent); color: #fff; } }

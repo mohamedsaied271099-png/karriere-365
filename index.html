@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Karriere 365</title>
-  <meta name="theme-color" content="#111827" />
+  <meta name="theme-color" content="#0f172a" />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icon.svg" />
   <link rel="stylesheet" href="styles.css" />
@@ -12,13 +12,14 @@
 <body>
   <header class="top">
     <div class="top-start">
-      <button id="menu" class="top-btn" aria-label="القايمة">☰</button>
-      <button id="home" class="top-btn" aria-label="الرئيسية">🏠</button>
-      <div class="brand" id="title">🚚 Karriere 365</div>
+      <button id="menu" class="top-btn" aria-label="القايمة"></button>
+      <button id="home" class="top-btn" aria-label="الرئيسية"></button>
+      <div class="brand" id="title">Karriere 365</div>
     </div>
     <div class="stats">
-      <span title="أيام متتالية">🔥 <b id="streak">0</b></span>
-      <span title="نقاط الخبرة">⭐ <b id="xp">0</b></span>
+      <span title="أيام متتالية" id="streakBox"><b id="streak">0</b></span>
+      <span title="نقاط الخبرة" id="xpBox"><b id="xp">0</b></span>
+      <a id="gear" class="top-btn show" href="#/settings" aria-label="الإعدادات"></a>
     </div>
   </header>
 

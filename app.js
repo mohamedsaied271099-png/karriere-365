@@ -1,4 +1,5 @@
 import { PHASES, SUGGESTED, BERUFE, LINKS, MILESTONES, WEEKDAY_PLAN, JOB_SOURCES, JOB_STATUS } from "./catalog.js";
+import { icon } from "./icons.js";
 import { putFile, getFile, delFile, exportFiles, importFiles } from "./files.js";
 import { PROMPTS, PROJECT_INSTRUCTIONS, openIn, parseJSONList } from "./ai.js";
 
@@ -95,8 +96,8 @@ function gradeNote(courseId, noteId, ok) {
 // ---------- التطبيقات ----------
 const APPS = {
   today: {
-    icon: "📅", name: "النهارده", color: "#f59e0b",
-    badge: () => `${WEEKDAY_PLAN[new Date().getDay()].icon} ${WEEKDAY_PLAN[new Date().getDay()].name}`,
+    icon: "📅", name: "النهارده", color: "#d97706",
+    badge: () => WEEKDAY_PLAN[new Date().getDay()].name,
     defaultSection: () => "now",
     side: () => [
       { head: `الأسبوع ${weekNum()} من 52` },
@@ -108,7 +109,7 @@ const APPS = {
     view: (s) => s === "week" ? weekView() : todayView(),
   },
   courses: {
-    icon: "📚", name: "كورساتي", color: "#0891b2",
+    icon: "📚", name: "كورساتي", color: "#0284c7",
     badge: () => `${S.courses.filter((c) => c.status === "done").length}/${S.courses.filter((c) => c.status !== "skip").length} خلصوا`,
     defaultSection: () => (S.courses.length ? "all" : "add"),
     side: () => [
@@ -124,7 +125,7 @@ const APPS = {
     view: (s) => s === "add" ? addView() : s === "organize" ? organizeView() : s.startsWith("st-") ? listView(s.slice(3)) : S.courses.find((c) => c.id === s) ? courseView(s) : listView(),
   },
   suggest: {
-    icon: "💡", name: "مقترحات", color: "#16a34a",
+    icon: "💡", name: "مقترحات", color: "#059669",
     badge: () => `${SUGGESTED.length} للسي في`,
     defaultSection: () => phaseOf(weekNum()).id,
     side: () => [
@@ -205,30 +206,54 @@ const APPS = {
 };
 
 // ---------- الشاشة الرئيسية ----------
+// الشاشة الرئيسية متقسمة لمجموعات، والإعدادات في الهيدر
+const GROUPS = [
+  { t: "كل يوم", apps: ["today", "review"] },
+  { t: "التعلّم", apps: ["courses", "suggest"] },
+  { t: "ألمانيا والشغل", apps: ["jobs", "profile", "road"] },
+];
+const appTitle = (id) => `<span class="title-ic" style="--c:${APPS[id].color}">${icon(id, 18)}</span>${APPS[id].name}`;
+
 function homeView() {
   const p = phaseOf(weekNum());
   const c = current();
+  const left = daysBetween(today(), targetDate());
   $view.innerHTML = `
-    <div class="hero">
-      <div><span class="pill" style="background:${p.color}">${esc(p.name)}</span> اليوم <b>${dayNum()}</b> من 365 · الأسبوع ${weekNum()}</div>
-      <div class="bar"><i style="width:${(dayNum() / 365) * 100}%"></i></div>
-      <div class="muted">🛫 هدف السفر: ${fmt(targetDate())} (فاضل ${daysBetween(today(), targetDate())} يوم)</div>
-      <div class="muted">${c ? `📘 الكورس الحالي: ${esc(c.title)} (${c.progress}%)` : `👋 ابدأ من <a href="#/courses/add">➕ ضيف لينكات كورساتك</a>`}</div>
+    <div class="hero2">
+      <div class="hero-top">
+        <span class="chip">${esc(p.name)}</span>
+        <span class="hero-week">الأسبوع ${weekNum()} من 52</span>
+      </div>
+      <div class="hero-main">
+        <div><div class="hero-num">${dayNum()}<small> / 365</small></div><div class="hero-sub">يوم في الخطة</div></div>
+        <div class="hero-trip">${icon("plane", 22)}<div><b>${left}</b> يوم<br><small>${fmt(targetDate())}</small></div></div>
+      </div>
+      <div class="hero-bar"><i style="width:${(dayNum() / 365) * 100}%"></i></div>
+      <a class="hero-next" href="${c ? "#/today" : "#/courses/add"}">${c ? `${icon("courses", 18)}<span>${esc(c.title)}</span><b>${c.progress}%</b>` : `${icon("courses", 18)}<span>ابدأ: ضيف لينكات كورساتك</span>`}${icon("chevron", 18)}</a>
     </div>
-    <div class="apps">${Object.entries(APPS).map(([id, a]) => `
-      <a class="app" href="#/${id}">
-        <span class="app-icon" style="background:${a.color}">${a.icon}</span>
-        <span class="app-name">${a.name}</span>
-        ${a.badge() ? `<span class="app-badge">${esc(a.badge())}</span>` : ""}
-      </a>`).join("")}
-    </div>`;
+    ${GROUPS.map((g) => `
+      <div class="group-title">${g.t}</div>
+      <div class="apps">${g.apps.map((id) => { const a = APPS[id]; return `
+        <a class="app" href="#/${id}" style="--c:${a.color}">
+          <span class="app-icon">${icon(id, 26)}</span>
+          <span class="app-name">${a.name}</span>
+          <span class="app-badge">${esc(a.badge()) || "&nbsp;"}</span>
+        </a>`; }).join("")}
+      </div>`).join("")}`;
+}
+
+// الإيموجي اللي في أول العناوين بتتشال عشان الشكل يبقى موحد مع الأيقونات
+const stripEmoji = (t) => String(t).replace(/^(?:[\p{Extended_Pictographic}\p{Regional_Indicator}←-⇿⬅-⬇]️?\s*)+/u, "");
+function cleanHeadings() {
+  $view.querySelectorAll("h2, h3").forEach((h) => { const n = h.firstChild; if (n?.nodeType === 3) n.textContent = stripEmoji(n.textContent); });
 }
 
 function renderSide(app, section) {
-  $side.innerHTML = `<div class="side-title">${app.icon} ${app.name}</div>` + app.side().map((it) => it.head
+  $side.style.setProperty("--c", app.color);
+  $side.innerHTML = `<div class="side-title">${appTitle(route.app)}</div>` + app.side().map((it) => it.head
     ? `<div class="side-head">${esc(it.head)}</div>`
     : `<a class="side-item ${it.id === section ? "on" : ""}" href="#/${route.app}/${it.id}">
-        ${it.color ? `<i class="dot" style="background:${it.color}"></i>` : ""}<span>${esc(it.label)}</span>${it.mark ? `<small>${esc(it.mark)}</small>` : ""}</a>`).join("");
+        ${it.color ? `<i class="dot" style="background:${it.color}"></i>` : ""}<span>${esc(stripEmoji(it.label))}</span>${it.mark ? `<small>${esc(it.mark)}</small>` : ""}</a>`).join("");
 }
 
 const handoffBtns = (key) => `<button class="btn" data-ai="claude" data-k="${key}">🟠 افتح في Claude</button><button class="btn alt" data-ai="chatgpt" data-k="${key}">🟢 ChatGPT</button>`;
@@ -997,12 +1022,17 @@ function render() {
   const app = APPS[route.app];
   document.body.classList.toggle("in-app", !!app);
   document.body.classList.remove("side-open");
-  document.getElementById("title").textContent = app ? `${app.icon} ${app.name}` : "🚚 Karriere 365";
+  document.getElementById("title").innerHTML = app ? appTitle(route.app) : `<span class="title-ic" style="--c:#22d3ee">${icon("truck", 18)}</span>Karriere 365`;
   if (!app) { $side.innerHTML = ""; homeView(); }
-  else { app.view(route.section); renderSide(app, route.section); }
+  else { app.view(route.section); cleanHeadings(); renderSide(app, route.section); }
   window.scrollTo(0, 0);
 }
 function on(sel, fn) { const el = $view.querySelector(sel); if (el) el.onclick = fn; }
+document.getElementById("menu").innerHTML = icon("menu", 20);
+document.getElementById("home").innerHTML = icon("home", 20);
+document.getElementById("gear").innerHTML = icon("settings", 20);
+document.getElementById("streakBox").insertAdjacentHTML("afterbegin", icon("flame", 16));
+document.getElementById("xpBox").insertAdjacentHTML("afterbegin", icon("star", 16));
 document.getElementById("home").onclick = () => { location.hash = "#/"; };
 document.getElementById("menu").onclick = () => document.body.classList.toggle("side-open");
 document.getElementById("scrim").onclick = () => document.body.classList.remove("side-open");
